@@ -1,0 +1,556 @@
+:root {
+  --primary-color: #0d9488;
+  --accent-color: #f59e0b;
+  --text-primary: #1f2937;
+  --text-secondary: #6b7280;
+  --bg-light: #f9fafb;
+  --card-bg: #ffffff;
+  --shadow-light: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-medium: 0 2px 4px rgba(0, 0, 0, 0.06);
+  --border-radius: 12px;
+  --transition-speed: 0.3s ease;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', 'Segoe UI', 'Roboto', sans-serif;
+  background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+  color: var(--text-primary);
+  line-height: 1.6;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  min-width: 270px;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 30px;
+  color: var(--primary-color);
+  text-shadow: 2px 2px 4px rgba(13, 148, 136, 0.2);
+}
+
+header h1 {
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 700;
+  margin-bottom: 8px;
+  background: linear-gradient(135deg, #0d9488, #14b8a6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+header p {
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
+  color: var(--text-secondary);
+  font-weight: 300;
+}
+
+.calendar-grid {
+  display: grid;
+  gap: 20px;
+  justify-content: center;
+  min-width: 270px;
+}
+
+/* Mobile: 1 column - works from 270px and above */
+@media (max-width: 480px) {
+  .calendar-grid {
+    grid-template-columns: 1fr;
+    padding: 5px;
+  }
+}
+
+/* Tablet: 2 columns */
+@media (min-width: 481px) and (max-width: 768px) {
+  .calendar-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Desktop: 3 columns */
+@media (min-width: 769px) {
+  .calendar-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.month-card {
+  background: var(--card-bg);
+  border-radius: var(--border-radius);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12), 
+              0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 18px;
+  transition: var(--transition-speed);
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(145deg, #ffffff, #f8fafc);
+}
+
+.month-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #0d9488, #14b8a6, #f59e0b);
+}
+
+.month-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15), 
+              0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.month-header {
+  text-align: center;
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 3px solid var(--primary-color);
+  color: var(--primary-color);
+}
+
+.month-header h2 {
+  font-size: clamp(1.1rem, 2.8vw, 1.5rem);
+  font-weight: 700;
+  margin-bottom: 4px;
+  text-shadow: 1px 1px 2px rgba(13, 148, 136, 0.15);
+}
+
+.month-header .gregorian {
+  font-size: clamp(0.75rem, 2vw, 0.95rem);
+  color: var(--text-secondary);
+  font-weight: 300;
+}
+
+.calendar-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 3px;
+  margin-bottom: 10px;
+  background: linear-gradient(135deg, #e0f2fe, #f0f9ff);
+  padding: 8px 4px;
+  border-radius: 8px;
+}
+
+.weekday {
+  text-align: center;
+  font-size: clamp(0.7rem, 2vw, 0.9rem);
+  font-weight: 600;
+  color: var(--primary-color);
+  padding: 4px 2px;
+  text-shadow: 0.5px 0.5px 1px rgba(13, 148, 136, 0.2);
+}
+
+.calendar-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.date-cell {
+  aspect-ratio: 1;
+  background: var(--bg-light);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 4px;
+  cursor: pointer;
+  transition: var(--transition-speed);
+  position: relative;
+  min-height: 45px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.date-cell:hover {
+  background: linear-gradient(135deg, #e6f7ff, #d4f1f4);
+  transform: scale(1.08);
+  box-shadow: 0 4px 8px rgba(13, 148, 136, 0.2);
+}
+
+/* Hijri date styling - main, centered, prominent */
+.hijri-date {
+  font-size: clamp(0.9rem, 3.5vw, 1.6rem);
+  font-weight: 700;
+  color: var(--primary-color);
+  text-align: center;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-shadow: 1px 1px 2px rgba(13, 148, 136, 0.15);
+}
+
+/* Gregorian date styling - small, bottom-right corner */
+.gregorian-date {
+  font-size: clamp(0.45rem, 1.5vw, 0.7rem);
+  color: var(--text-secondary);
+  font-weight: 400;
+  position: absolute;
+  bottom: 2px;
+  right: 3px;
+  line-height: 1;
+  opacity: 0.8;
+}
+
+/* Extra small screens optimization (270px - 380px) */
+@media (max-width: 380px) {
+  body {
+    padding: 8px;
+  }
+
+  .calendar-grid {
+    gap: 10px;
+  }
+
+  .month-card {
+    padding: 10px;
+  }
+
+  .month-header h2 {
+    font-size: clamp(0.9rem, 3vw, 1.15rem);
+  }
+
+  .month-header .gregorian {
+    font-size: clamp(0.6rem, 2vw, 0.75rem);
+  }
+
+  .calendar-weekdays {
+    gap: 1px;
+    padding: 5px 2px;
+  }
+
+  .weekday {
+    font-size: clamp(0.55rem, 2vw, 0.7rem);
+    padding: 3px 0px;
+  }
+
+  .calendar-days {
+    gap: 1px;
+  }
+
+  .date-cell {
+    min-height: 36px;
+    padding: 4px 1px;
+  }
+  
+  .hijri-date {
+    font-size: clamp(0.7rem, 3vw, 0.95rem);
+  }
+  
+  .gregorian-date {
+    font-size: clamp(0.38rem, 1.3vw, 0.5rem);
+    bottom: 1px;
+    right: 1px;
+  }
+
+  .designer-credit {
+    font-size: clamp(0.6rem, 1.8vw, 0.7rem);
+    margin-top: 8px;
+    padding-top: 5px;
+  }
+}
+
+/* Very small screens (270px - 320px) */
+@media (max-width: 320px) {
+  body {
+    padding: 6px;
+  }
+
+  .calendar-grid {
+    gap: 8px;
+  }
+
+  .month-card {
+    padding: 8px;
+  }
+
+  .month-header {
+    margin-bottom: 6px;
+    padding-bottom: 5px;
+  }
+
+  .month-header h2 {
+    font-size: 0.9rem;
+    margin-bottom: 2px;
+  }
+
+  .month-header .gregorian {
+    font-size: 0.6rem;
+  }
+
+  .calendar-weekdays {
+    gap: 0px;
+    padding: 4px 1px;
+    margin-bottom: 5px;
+  }
+
+  .weekday {
+    font-size: 0.55rem;
+    padding: 2px 0px;
+  }
+
+  .calendar-days {
+    gap: 1px;
+  }
+
+  .date-cell {
+    min-height: 32px;
+    padding: 3px 0.5px;
+  }
+  
+  .hijri-date {
+    font-size: 0.68rem;
+  }
+  
+  .gregorian-date {
+    font-size: 0.36rem;
+    bottom: 1px;
+    right: 1px;
+  }
+
+  .designer-credit {
+    font-size: 0.58rem;
+    margin-top: 6px;
+    padding-top: 4px;
+  }
+}
+
+/* Exactly 270px-290px width - Critical optimization */
+@media (max-width: 290px) {
+  body {
+    padding: 4px;
+  }
+
+  .container {
+    min-width: 270px;
+  }
+
+  .calendar-grid {
+    gap: 6px;
+  }
+
+  .month-card {
+    padding: 6px;
+  }
+
+  .month-header {
+    margin-bottom: 5px;
+    padding-bottom: 4px;
+  }
+
+  .month-header h2 {
+    font-size: 0.85rem;
+  }
+
+  .month-header .gregorian {
+    font-size: 0.55rem;
+  }
+
+  .calendar-weekdays {
+    gap: 0px;
+    padding: 3px 0px;
+    margin-bottom: 4px;
+  }
+
+  .weekday {
+    font-size: 0.5rem;
+    padding: 2px 0px;
+  }
+
+  .calendar-days {
+    gap: 0.5px;
+  }
+
+  .date-cell {
+    min-height: 30px;
+    padding: 2px 0px;
+    border-radius: 4px;
+  }
+  
+  .hijri-date {
+    font-size: 0.64rem;
+  }
+  
+  .gregorian-date {
+    font-size: 0.32rem;
+    bottom: 0.5px;
+    right: 0.5px;
+  }
+
+  .designer-credit {
+    font-size: 0.54rem;
+    margin-top: 5px;
+    padding-top: 3px;
+  }
+
+  .date-cell.islamic-holiday::after {
+    font-size: 0.5rem;
+    top: 2px;
+    left: 2px;
+  }
+}
+
+.date-cell.empty {
+  visibility: hidden;
+  cursor: default;
+}
+
+/* Weekend styling - Saturday and Sunday */
+.calendar-days > .date-cell:not(.empty):nth-child(7n+1) { /* Sunday */
+  background: linear-gradient(135deg, #fffbeb, #fef3c7);
+}
+
+.calendar-days > .date-cell:not(.empty):nth-child(7n+7) { /* Saturday */
+  background: linear-gradient(135deg, #fffbeb, #fef3c7);
+}
+
+.date-cell.today {
+  background: linear-gradient(135deg, var(--primary-color), #0f766e);
+  color: white;
+  box-shadow: 0 0 15px rgba(13, 148, 136, 0.4);
+}
+
+.date-cell.today .hijri-date {
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.date-cell.today .gregorian-date {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.date-cell.islamic-holiday {
+  background: linear-gradient(135deg, #dc2626, #b91c1c);
+  color: white;
+  position: relative;
+  box-shadow: 0 0 12px rgba(220, 38, 38, 0.3);
+}
+
+.date-cell.islamic-holiday .hijri-date {
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.date-cell.islamic-holiday .gregorian-date {
+  color: rgba(255, 255, 255, 0.95);
+  font-weight: 500;
+}
+
+.date-cell.islamic-holiday::after {
+  content: '★';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  font-size: clamp(0.6rem, 1.5vw, 0.8rem);
+  color: #fbbf24;
+  animation: twinkle 2s infinite;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(0.9); }
+}
+
+/* Reset holiday background for weekends */
+.calendar-days > .date-cell.islamic-holiday:nth-child(7n+1),
+.calendar-days > .date-cell.islamic-holiday:nth-child(7n+7) {
+  background: linear-gradient(135deg, #dc2626, #b91c1c) !important;
+}
+
+.loading-skeleton {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 25px;
+}
+
+.skeleton {
+  height: 350px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.hidden {
+  display: none;
+}
+
+/* Designer credit at the bottom of each month card */
+.designer-credit {
+  text-align: center;
+  margin-top: 15px;
+  padding-top: 10px;
+  border-top: 1px solid #e5e7eb;
+  color: #9ca3af;
+  font-size: clamp(0.7rem, 1.8vw, 0.85rem);
+  font-style: italic;
+  font-weight: 300;
+}
+
+/* Print styles */
+@media print {
+  body {
+    background: white;
+    padding: 0;
+  }
+
+  .month-card {
+    break-inside: avoid;
+    box-shadow: none;
+    border: 1px solid #ccc;
+    page-break-inside: avoid;
+  }
+
+  .month-card::before {
+    display: none;
+  }
+
+  header {
+    page-break-after: avoid;
+  }
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Focus styles for accessibility */
+.date-cell:focus {
+  outline: 3px solid var(--accent-color);
+  outline-offset: 2px;
+}
+
+/* Additional color and shadow enhancements */
+.month-card:nth-child(3n+1) {
+  background: linear-gradient(145deg, #ffffff, #f0fdf4);
+}
+
+.month-card:nth-child(3n+2) {
+  background: linear-gradient(145deg, #ffffff, #eff6ff);
+}
+
+.month-card:nth-child(3n+3) {
+  background: linear-gradient(145deg, #ffffff, #fefce8);
+}
